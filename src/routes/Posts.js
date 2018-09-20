@@ -1,30 +1,21 @@
-import React from 'react';
-import { connect } from 'dva';
-import styles from './Posts.css';
-import PostsComponent from '../components/Posts';
+import React from "react";
+import { connect } from "dva";
+import styles from "./Posts.css";
+import PostsComponent from "../components/Posts";
 
 function Posts(props) {
   return (
     <div className={styles.normal}>
-      <PostsComponent posts={props.posts}/>
+      <PostsComponent loading={props.loading} posts={props.posts} />
     </div>
   );
 }
 
-function mapStateToProps() {
+function mapStateToProps(state) {
+  const { posts, postsByKey } = state.posts;
   return {
-    posts: [
-      {
-        title: 'Learn Dva',
-        key: '1',
-        category: 'dva'
-      },
-      {
-        title: 'Learn Antd',
-        key: '2',
-        category: 'antd'
-      }
-    ]
+    loading: state.loading.models.posts,
+    posts: posts.map(key => ({ ...postsByKey[key], key }))
   };
 }
 
