@@ -16,7 +16,7 @@ export default {
     }
   },
   effects: {
-    *a(action, { call, put }) {
+    *fetchPosts(action, { call, put }) {
       // is equal to a: function* ()
       const result = yield call(fetchPosts); // call is for async logic
       yield put({ type: "save", payload: result });
@@ -27,7 +27,7 @@ export default {
     setup({ dispatch, history }) {
       return history.listen(({ pathname }) => {
         if (pathname === "/posts") {
-          dispatch({ type: "a" });
+          dispatch({ type: "fetchPosts" });
         }
       });
     }
