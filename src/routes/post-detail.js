@@ -2,20 +2,18 @@ import React from "react";
 import { connect } from "dva";
 import styles from "./post-detail.css";
 import PostDetailComponent from "../components/post-detail";
+import Nav from "../components/Nav";
 
 function PostDetail(props) {
-  console.log("sanem");
   return (
     <div className={styles.normal}>
-      Title: {props.post.title}
+      <Nav />
       <PostDetailComponent post={props.post} loading={props.loading} />
     </div>
   );
 }
 
 function mapStateToProps(state, ownProps) {
-  debugger;
-  console.log("SANEM");
   const key = ownProps.match.params.key;
   return {
     loading: state.loading.models.posts,
