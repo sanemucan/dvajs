@@ -1,4 +1,5 @@
 import { fetchPost, fetchPosts } from "../services/posts";
+import pathToRegexp from "path-to-regexp";
 
 export default {
   namespace: "posts",
@@ -13,6 +14,13 @@ export default {
         postsByKey,
         posts: Object.keys(postsByKey)
       };
+    },
+    update(state, { payload: post }) {
+      const postByKey = {
+        ...state.postsByKey,
+        [post.key]: post
+      };
+      return { ...state, postByKey };
     }
   },
   effects: {
@@ -20,6 +28,10 @@ export default {
       // is equal to a: function* ()
       const result = yield call(fetchPosts); // call is for async logic
       yield put({ type: "save", payload: result });
+    },
+    *fetchPost({ payload: key }, { call, put }) {
+      const result = yield call(fetchPost, key);
+      yield put({ type: "update", payload: key });
     }
   },
   subscriptions: {
@@ -28,6 +40,15 @@ export default {
       return history.listen(({ pathname }) => {
         if (pathname === "/posts") {
           dispatch({ type: "fetchPosts" });
+        }
+
+        const match = pathToRegexp("/posts/:key").exec(pathname);
+        if (match) {
+          const key = match[1];
+          dispatch({
+            type: "fetchPost",
+            payload: key
+          });
         }
       });
     }
