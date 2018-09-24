@@ -11,11 +11,15 @@ function RouterConfig({ history }) {
     <Router history={history}>
       <Switch>
         <Route path="/" exact component={IndexPage} />
+        <Route path="/posts/:key" component={PostDetail} />
         <Route path="/posts" component={Posts} />
-        <Route path="/posts/:postId" component={PostDetail} />
       </Switch>
     </Router>
   );
 }
+
+const Sanem = ({ match }) => {
+  return <div>Sanem {match.params.key}</div>;
+};
 
 export default RouterConfig;

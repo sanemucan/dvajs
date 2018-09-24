@@ -14,8 +14,9 @@ function PostDetail(props) {
 }
 
 function mapStateToProps(state, ownProps) {
+  debugger;
   console.log("SANEM");
-  const key = ownProps.params.key;
+  const key = ownProps.match.params.key;
   return {
     loading: state.loading.models.posts,
     post: {
